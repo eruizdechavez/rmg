@@ -1,0 +1,30 @@
+<h2>
+  Grieta
+</h2>
+
+<ul>
+  {{#each-in model.grieta as |field value|}}
+    <li>
+      {{field}}: {{value}}
+    </li>
+  {{/each-in}}
+</ul>
+
+<h3>
+  Revisiones
+</h3>
+
+<ul>
+  {{#each model.revision.items as |revision|}}
+    <li>
+      <ul>
+        {{#each-in revision as |field value|}}
+          <li>
+            {{field}}: {{value}}
+          </li>
+        {{/each-in}}
+      </ul>
+    </li>
+  {{/each}}
+</ul>
+

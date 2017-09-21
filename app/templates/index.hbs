@@ -1,0 +1,27 @@
+<h2>
+  Grietas
+</h2>
+
+<ul>
+  {{#each model.grieta.items as |grieta|}}
+    <li>
+      {{#link-to "grieta" grieta.id}}
+        {{grieta.reportadaPor}}
+      {{/link-to}}
+    </li>
+  {{/each}}
+</ul>
+
+<h2>
+  Revisiones
+</h2>
+
+<ul>
+  {{#each model.revision.items as |revision|}}
+    <li>
+      {{!-- {{#link-to "revision" revision.id}} --}}
+        {{revision.revisadaPor}}
+      {{!-- {{/link-to}} --}}
+    </li>
+  {{/each}}
+</ul>
