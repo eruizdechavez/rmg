@@ -1,5 +1,5 @@
 import Pretender from 'pretender';
-import { filter, find } from 'lodash';
+import { filter, find, isEmpty, mapValues } from 'lodash';
 
 export default function init() {
   const server = new Pretender(function() {});
@@ -10,16 +10,16 @@ export default function init() {
   const grietas = [
     {
       id: 1,
-      critica: false,
+      critica: true,
       desplomes: false,
       desprendimiento: false,
       diagonalConHorizontalDePiso: false,
       diagonalEnLozaDeEsquinaACentro: false,
-      externa: false,
+      externa: true,
+      interna: true,
       geoPt: {},
       golpeteo: false,
       hundimientos: false,
-      interna: false,
       loza: false,
       message: 'lorem ipsum',
       paralelaAlPiso: false,
@@ -27,6 +27,12 @@ export default function init() {
       pisosHuecos: false,
       reportadaPor: 'john doe',
       vibraciones: false,
+
+      // Undocumented fields
+      tipo: 'Interna',
+      ubicacion: 'Losa',
+      comentario:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
     },
     {
       id: 2,
@@ -36,10 +42,10 @@ export default function init() {
       diagonalConHorizontalDePiso: true,
       diagonalEnLozaDeEsquinaACentro: true,
       externa: true,
+      interna: false,
       geoPt: {},
-      golpeteo: true,
+      golpeteo: false,
       hundimientos: true,
-      interna: true,
       loza: true,
       message: 'dolor sit',
       paralelaAlPiso: true,
@@ -47,6 +53,64 @@ export default function init() {
       pisosHuecos: true,
       reportadaPor: 'jane doe',
       vibraciones: true,
+
+      // Undocumented fields
+      tipo: 'Interna',
+      ubicacion: 'Losa',
+      comentario:
+        'Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    },
+    {
+      id: 3,
+      critica: false,
+      desplomes: false,
+      desprendimiento: false,
+      diagonalConHorizontalDePiso: false,
+      diagonalEnLozaDeEsquinaACentro: false,
+      externa: false,
+      interna: true,
+      geoPt: {},
+      golpeteo: false,
+      hundimientos: false,
+      loza: false,
+      message: 'lorem ipsum',
+      paralelaAlPiso: false,
+      pared: false,
+      pisosHuecos: false,
+      reportadaPor: 'john doe',
+      vibraciones: false,
+
+      // Undocumented fields
+      tipo: 'Interna',
+      ubicacion: 'Losa',
+      comentario:
+        'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.',
+    },
+    {
+      id: 4,
+      critica: false,
+      desplomes: true,
+      desprendimiento: true,
+      diagonalConHorizontalDePiso: true,
+      diagonalEnLozaDeEsquinaACentro: true,
+      externa: false,
+      interna: true,
+      geoPt: {},
+      golpeteo: false,
+      hundimientos: true,
+      loza: true,
+      message: 'dolor sit',
+      paralelaAlPiso: true,
+      pared: true,
+      pisosHuecos: true,
+      reportadaPor: 'jane doe',
+      vibraciones: true,
+
+      // Undocumented fields
+      tipo: 'Interna',
+      ubicacion: 'Losa',
+      comentario:
+        'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     },
   ];
 
@@ -105,13 +169,27 @@ export default function init() {
     },
   ];
 
-  server.get('/api/grieta', () => [
-    200,
-    { 'Content-Type': 'application/json' },
-    {
-      items: grietas,
-    },
-  ]);
+  server.get('/api/grieta', request => {
+    let items;
+
+    if (isEmpty(request.queryParams)) {
+      items = grietas;
+    } else {
+      const queryParams = mapValues(
+        request.queryParams,
+        value => (value === 'true' || value === 'false' ? value === 'true' : value)
+      );
+      items = filter(grietas, queryParams);
+    }
+
+    return [
+      200,
+      { 'Content-Type': 'application/json' },
+      {
+        items,
+      },
+    ];
+  });
 
   server.get('/api/grieta/:id', request => [
     200,

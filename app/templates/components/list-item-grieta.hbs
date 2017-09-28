@@ -1,0 +1,21 @@
+<div class="card h-100">
+  {{!-- TODO:  Update to thumb URL using a computed property --}}
+  {{!--
+  <a href="#">
+    <img class="card-img-top" src="https://storage.googleapis.com/revisamigrieta-images/THUMB" alt="">
+  </a>
+   --}}
+  <div class="card-body">
+    <h4 class="card-title">
+      {{#link-to "grieta" grieta.id}}
+        {{tipos}}
+      {{/link-to}}
+    </h4>
+    <h5>{{grieta.ubicacion}}</h5>
+    <p class="card-text">{{grieta.comentario}}</p>
+  </div>
+  <div class="card-footer">
+    <span>Peligro</span>
+    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+  </div>
+</div>
